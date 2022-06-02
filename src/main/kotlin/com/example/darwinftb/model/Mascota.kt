@@ -7,6 +7,7 @@ import javax.persistence.Id
 import javax.persistence.Table
 @Entity
 @Table(name="mascota")
+
 class Mascota {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -15,6 +16,12 @@ class Mascota {
     var name: String? = null
     var edad: Long? = null
     var peso: Long? = null
+    @Column(name = "veterinario_id")
+    var veterinarioId:Long?=null
+    @Column(name = "dueño_id")
+    var dueñoId:Long?=null
+
+
 
 }
 

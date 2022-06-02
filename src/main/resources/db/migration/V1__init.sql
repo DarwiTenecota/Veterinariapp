@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS veterinario(
     PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS dueno (
+CREATE TABLE IF NOT EXISTS dueño (
      id SERIAL,
      nombre VARCHAR (100) NOT NULL,
      PRIMARY KEY (id)
@@ -12,9 +12,13 @@ CREATE TABLE IF NOT EXISTS dueno (
 CREATE TABLE IF NOT EXISTS mascota (
     id SERIAL,
     name VARCHAR (100) NOT NULL,
-    edad VARCHAR (100) NOT NULL,
-    peso VARCHAR (15) NOT NULL,
-    PRIMARY KEY (id)
+    edad INT  NOT NULL,
+    peso INT  NOT NULL,
+    veterinarioId INT NOT NULL,
+    dueñoId INT NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (veterinarioId) references veterinario(id),
+    FOREIGN KEY (dueñoId) references dueño(id)
 );
 
 

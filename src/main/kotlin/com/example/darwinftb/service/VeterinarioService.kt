@@ -4,7 +4,9 @@ import com.example.darwinftb.model.Dueño
 import com.example.darwinftb.model.Veterinario
 import com.example.darwinftb.repository.VeterinarioRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 
 @Service
 
@@ -22,7 +24,15 @@ class VeterinarioService {
     }
 
     fun save(veterinario: Veterinario): Veterinario {
-        return veterinarioRepository.save(veterinario)
+        try {
+            veterinario.name?.takeIf { it.trim().isNotEmpty() }
+                    ?: throw Exception("name no debe ser vacio")
+            return veterinarioRepository.save(veterinario)
+        } catch (ex: Exception) {
+            throw ResponseStatusException(
+                    HttpStatus.NOT_FOUND, ex.message, ex)
+
+        }
     }
 
     fun update(veterinario: Veterinario): Veterinario {
@@ -30,15 +40,22 @@ class VeterinarioService {
         return veterinarioRepository.save(veterinario)
     }
 
-    fun updateName(veterinario: Veterinario): Veterinario {
-        val response = veterinarioRepository.findById(veterinario.id)
-                ?: throw Exception()
+    fun updateName (veterinario: Veterinario): Veterinario {
+        try {
 
-        response.apply {
-            name = veterinario.name
+            val response = veterinarioRepository.findById(veterinario.id)
+                    ?: throw Exception("El id ${veterinario.id} en veterinario no existe")
+            response.apply {
+                this.name = veterinario.name
+            }
+            return veterinarioRepository.save(veterinario)
         }
-        return veterinarioRepository.save(response)
+        catch (ex: Exception) {
+            throw ResponseStatusException(
+                    HttpStatus.NOT_FOUND, ex.message, ex)
+        }
     }
+
     fun delete (id: Long): Boolean{
          veterinarioRepository.deleteById(id)
         return true
