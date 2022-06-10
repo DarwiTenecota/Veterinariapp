@@ -21,6 +21,12 @@ CREATE TABLE IF NOT EXISTS mascota (
     FOREIGN KEY (dueñoId) references dueño(id)
 );
 
+ CREATE TABLE IF NOT EXISTS usuario(
+    id SERIAL,
+    username VARCHAR (100) NOT NULL,
+    password VARCHAR (10) NOT NULL,
+    PRIMARY KEY (id)
+    );
 
 
 
